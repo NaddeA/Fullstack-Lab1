@@ -3,23 +3,20 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const dotenv = require('dotenv');
 const path = require('path');
-const Recipe = require('./views/recipeSchema')
+const Recipe = require('./views/recipeSchema');
 
 dotenv.config();
 
 const app = express();
-
 
 mongoose.connect(process.env.MONGO_DB, { useNewUrlParser: true, useUnifiedTopology: true });
 
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname)));
 
-
 app.get('/', (req, res) => {
-    res.sendFile(__dirname + 'index.html');
+    res.sendFile(path.join(__dirname, 'index.html'));
 });
-
 
 app.get('/api/recipes', async (req, res) => {
     try {
@@ -29,7 +26,6 @@ app.get('/api/recipes', async (req, res) => {
         res.status(500).send(error);
     }
 });
-
 
 app.get('/api/recipes/:title', async (req, res) => {
     try {
@@ -58,7 +54,6 @@ app.post('/api/recipes', async (req, res) => {
     }
 });
 
-
 app.put('/api/recipes/:id', async (req, res) => {
     try {
         const updatedRecipe = await Recipe.findByIdAndUpdate(req.params.id, req.body, { new: true });
@@ -71,7 +66,6 @@ app.put('/api/recipes/:id', async (req, res) => {
         res.status(500).send(error);
     }
 });
-
 
 app.delete('/api/recipes/:id', async (req, res) => {
     try {

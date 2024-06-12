@@ -1,22 +1,20 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>My Recipe blog</title>
+    <title>My Recipe Blog</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Welcome to my Recipe blog</h1>
+    <h1>Welcome to my Recipe Blog</h1>
     <input type="text" id="search" placeholder="Search by title"><br /><br />
     <form id="recipes">
         <input type="text" id="title" placeholder="Title" required><br />
-        <input type="text" id="ingredients" placeholder="Ingredients" required><br />
+        <input type="text" id="ingredients" placeholder="Ingredients (comma separated)" required><br />
         <textarea id="instructions" placeholder="Instructions" required></textarea><br />
         <input type="text" id="cookingTime" placeholder="Cooking Time" required><br />
         <button type="submit">Add Recipe</button><br />
-        <button type="button" id="update-recipe">Update recipe</button><br />
+        <button type="button" id="update-recipe" style="display: none;">Update Recipe</button><br />
     </form>
-
-    
 
     <table id="recipes-table">
         <thead>
@@ -82,12 +80,10 @@
                 form.reset();
                 recipeUpdate.style.display = 'none';
                 form.querySelector('button[type="submit"]').style.display = 'block';
-            }
-            else {
+            } else {
                 console.log('Failed to update recipe');
             }
         });
-
 
         async function fetchRecipes() {
             const response = await fetch('http://localhost:5000/api/recipes');
@@ -101,8 +97,8 @@
                     <td>${recipe.instructions}</td>
                     <td>${recipe.cookingTime}</td>
                     <td>
-                        <button class= "edit" onclick="editRecipe('${recipe.id}', '${recipe.title}', '${recipe.ingredients.join(', ')}', '${recipe.instructions}', '${recipe.cookingTime}')">Edit</button>
-                        <button class= "delete" onclick="deleteRecipe(${recipe.id})">Delete</button>
+                        <button class="edit" onclick="editRecipe('${recipe._id}', '${recipe.title}', '${recipe.ingredients.join(', ')}', '${recipe.instructions}', '${recipe.cookingTime}')">Edit</button>
+                        <button class="delete" onclick="deleteRecipe('${recipe._id}')">Delete</button>
                     </td>
                 `;
                 tableBody.appendChild(row);
@@ -117,7 +113,6 @@
                 fetchRecipes();
             }
         }
-        
 
         function editRecipe(id, title, ingredients, instructions, cookingTime) {
             currentRecipeId = id;
@@ -141,7 +136,7 @@
                 }
             });
         });
-        
+
         fetchRecipes();
     </script>
 </body>
